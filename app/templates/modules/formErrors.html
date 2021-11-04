@@ -1,0 +1,12 @@
+<!-- reusable form error functionality-->
+{% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for field_name, field_errors in form.errors | dictsort if field_errors %}
+      {% for err in field_errors %}
+        {{ form[field_name].label }}:
+        {{ err }}
+        <br>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %}

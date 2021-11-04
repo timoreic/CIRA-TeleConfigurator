@@ -1,0 +1,82 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}"/>
+  <!-- Import JS functionality for table sorting -->
+  <script src="{{ url_for('static', filename='js/tables.js') }}" defer="defer"></script>
+{% endblock %}
+
+{% block page_content %}
+
+  <!-- Container above the database table -->
+  <div class="container">
+    <!-- Heading -->
+    <h1>Tile</h1>
+    <!-- Link to add a new Entry -->
+    <a href="/tile/addNew">Add New Tile</a>
+    <!-- Filter Form -->
+    <form method="post" id="filterForm" name="filterForm" action="/tile" class="">
+      <input type="radio" id="datetime" name="timeFormat" value="Datetime" checked="checked" onclick="datetimeChecked()"/>
+      <label for="datetime">Datetime &nbsp;</label>
+      <input type="radio" id="gpstime" name="timeFormat" value="gpstime" onclick="gpstimeChecked()"/>
+      <label for="datetime">GPS Time</label>
+      <br/>
+      <input type="datetime-local" id="time" name="time" value="{{time}}"/>
+      <input type="hidden" id="time_float" name="time_float" value="{{time_float}}"/>
+      <br/>
+      <br/>
+      <input class="btn btn-primary" onclick="btnFilterClick();" type="button" id="submitBtn" name="submitBtn" value="Filter" autocomplete="off"/>
+    </form>
+  </div>
+
+  <!-- Database Table -->
+  <div class="container databaseTable">
+    <div class="table-responsive">
+      <table id="databaseTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <!-- The table headers-->
+            <th scope="col"></th>
+            <th scope="col" class="sortable" onclick="sortTableNum(1)">tile_id</th>
+            <th scope="col" class="sortable" onclick="sortTableDate(2)">begintime</th>
+            <th scope="col" class="sortable" onclick="sortTableDate(3)">endtime</th>
+            <th scope="col" class="sortable" onclick="sortTableNum(4)">tile_pos_east</th>
+            <th scope="col" class="sortable" onclick="sortTableNum(5)">tile_pos_north</th>
+            <th scope="col" class="sortable" onclick="sortTableNum(6)">tile_altitude</th>
+            <th scope="col" class="sortable" onclick="sortTableNum(7)">beamformer_id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tile in tiles %} <!-- Loops through each entry in the tile table passed from 'app/views.py'-->
+            <tr>
+              {% if tile.endtime == 9e99 %} <!-- Shows an 'edit' link for a tile if endtime hasn't been set-->
+                <td scope="row">
+                  <a href="{{url_for('updateTile', tile_id=tile.tile_id, begintime=tile.begintime)}}">Edit</a>
+                </td>
+              {% else %} <!-- Default: doesn't allow editing of a tile-->
+                <td scope="row"></td>
+              {% endif %}
+              <!-- The table content - names set in 'app/models.py'-->
+              <td>{{ tile.tile_id }}</td>
+              <td class="begintime" data-time="{{ tile.begintime }}" ">{{ tile.begintime }}</td>
+              <td class=" endtime" data-time="{{ tile.endtime }}" ">{{ tile.endtime }}</td>
+              <td>{{ tile.tile_pos_east }}</td>
+              <td>{{ tile.tile_pos_north }}</td>
+              <td>{{ tile.tile_altitude }}</td>
+              <td>{{ tile.beamformer_id }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- Shows the current offset time (gps to unix) -->
+    <p>Current Offset Value (GPS to Unix) =
+      <span id='offset'>{{ offset }}</span></p>
+  </div>
+
+{% endblock %}

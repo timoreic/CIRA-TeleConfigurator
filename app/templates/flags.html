@@ -1,0 +1,77 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}"/>
+  <!-- Import JS functionality for table sorting -->
+  <script src="{{ url_for('static', filename='js/tables.js') }}" defer="defer"></script>
+{% endblock %}
+
+{% block page_content %}
+
+  <!-- Everything above the database table -->
+  <div class="container">
+    <!-- Heading -->
+    <h1>Flags</h1>
+    <!-- Link to add a new Entry -->
+    <a href="/flags/addNew">Add New Flag</a>
+    <!-- Filter Form -->
+    <form method="post" id="filterForm" name="filterForm" action="/flags" class="">
+      <input type="radio" id="datetime" name="timeFormat" value="Datetime" checked="checked" onclick="datetimeChecked()"/>
+      <label for="datetime">Datetime &nbsp;</label>
+      <input type="radio" id="gpstime" name="timeFormat" value="gpstime" onclick="gpstimeChecked()"/>
+      <label for="datetime">GPS Time</label>
+      <br/>
+      <input type="datetime-local" id="time" name="time" value="{{time}}"/>
+      <input type="hidden" id="time_float" name="time_float" value="{{time_float}}"/>
+      <br/>
+      <br/>
+      <input class="btn btn-primary" onclick="btnFilterClick();" type="button" id="submitBtn" name="submitBtn" value="Filter" autocomplete="off"/>
+    </form>
+  </div>
+
+  <!-- Database Table -->
+  <div class="container databaseTable">
+    <div class="table-responsive">
+      <table id="databaseTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <!-- The table headers-->
+            <th scope="col"></th>
+            <th scope="col" class="sortable" onclick="sortTableDate(1)">starttime</th>
+            <th scope="col" class="sortable" onclick="sortTableDate(2)">stoptime</th>
+            <th scope="col" class="sortable" onclick="sortTableNum(3)">tile_id</th>
+            <th scope="col">creator</th>
+            <th scope="col">comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for flag in flags %} <!-- Loops through each entry in the flags table passed from 'app/views.py'-->
+            <tr>
+              {% if flag.stoptime == None %} <!-- Shows an 'edit' link for a flags if endtime hasn't been set-->
+                <td scope="row">
+                  <a href="{{url_for('updateFlags', tile_id=flag.tile_id, starttime=flag.starttime)}}">Edit</a>
+                </td>
+              {% else %}
+                <td scope="row"></td>
+              {% endif %}
+              <!-- The table content - names set in 'app/models.py'-->
+              <td class="begintime" data-time="{{ flag.starttime }}">{{ flag.starttime }}</td>
+              <td class="endtime" data-time="{{ flag.stoptime }}">{{ flag.stoptime }}</td>
+              <td>{{ flag.tile_id }}</td>
+              <td>{{ flag.creator }}</td>
+              <td>{{ flag.comment }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- Shows the current offset time (gps to unix) -->
+    <p>Current Offset Value (GPS to Unix) =
+      <span id='offset'>{{ offset }}</span></p>
+  </div>
+{% endblock %}

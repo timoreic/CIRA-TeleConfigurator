@@ -1,0 +1,37 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form class="smallForm" method="POST" autocomplete="off">
+    <h1 class="center">New Flag</h1>
+    {% include "modules/formErrors.html"%}
+    <!-- error for missing tile_id entry-->
+    {{ form.hidden_tag() }}
+    {{ form.tile_id.label }}
+    <!-- form heading/label-->
+    {{ form.tile_id(class="formField") }}
+    <!-- tile_id form-->
+    <br><br>
+    {{ form.creator.label }}
+    <!-- form heading/label-->
+    {{ form.creator(class="formField") }}
+    <!-- creator form-->
+    <br><br>
+    {{ form.comment.label }}
+    <!-- form heading/label-->
+    {{ form.comment(class="formField") }}
+    <!-- comment form-->
+    <br><br><br>
+    {{ form.submit(class="btn btn-success") }}
+    <!-- Submit button-->
+  </form>
+{% endblock %}

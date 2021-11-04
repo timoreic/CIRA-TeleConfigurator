@@ -1,0 +1,23 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form class="smallForm" method="POST" autocomplete="off">
+    <h1 class="center">Save Configuration</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing config name entry-->
+    {{ form.hidden_tag() }}
+    {{ form.configuration_name.label }} <!-- form heading/label-->
+    {{ form.configuration_name(class="formField") }} <!-- name form-->
+    <br><br><br>
+    {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+  </form>
+{% endblock %}

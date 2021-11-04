@@ -1,0 +1,38 @@
+<!--
+  Extends 'base.html' found in "/app/templates"
+-->
+{% extends "base.html" %}
+
+<!--
+  Imports styling sheet
+-->
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+{% endblock %}
+
+<!--
+  This module creates the menu buttons seen on the 'home screen' 
+-->
+{% block page_content %}
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link" href="/tile">Tile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/beamformer">Beamformer</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/cable">Cable</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/receiver">Receiver</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/flags">Flags</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/configuration">Configuration</a>
+    </li>
+  </ul>
+{% endblock %}

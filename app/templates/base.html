@@ -1,0 +1,55 @@
+<!--
+  Extends the bootstrap 'base.html' file that is imported as a Flask module - check 'requirements.txt' for modules
+  - all other templates in this project inherit from this file
+-->
+{% extends "bootstrap/base.html" %}
+
+<!-- 
+  This is the page title, shown in the tab
+  - Is inherited by all other pages
+-->
+{% block title %}MWA{% endblock %}
+
+<!--
+  This imports the stylesheets needed for all the templates. see '/app/static/css'
+-->
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+  <link rel="shortcut icon" href="favicon.ico">
+{% endblock %}
+
+<!--
+  This is the navbar of the website. It's here so every other template inherits the same navbar
+-->
+{% block navbar %}
+  <div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">MWA</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="/">Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+<!--
+  This defines the space for all the page content that other pages will extend
+-->
+{% block content %}
+  <div id="page_content" class="container">
+    {% block page_content %}{% endblock %}
+  </div>
+{% endblock %}

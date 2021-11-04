@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+{% endblock %}
+
+{% block page_content %}
+  <div class="container">
+    <form class="smallForm" method="POST" autocomplete="off">
+      <h1 class="center">Update Flag</h1>
+      {% include "modules/formErrors.html"%} <!-- error for missing tile_id entry-->
+      {{ form.hidden_tag() }}
+      {{ form.tile_id.label }} <!-- form heading/label-->
+      {{ form.tile_id(class="formField", value=flag_to_update.tile_id) }} <!-- tile_id form-->
+      <br><br>
+      {{ form.creator.label }} <!-- form heading/label-->
+      {{ form.creator(class="formField", value=flag_to_update.creator) }} <!-- creator form-->
+      <br><br>
+      {{ form.comment.label }} <!-- form heading/label-->
+      {{ form.comment(class="formField", value=flag_to_update.comment) }} <!-- comment form-->
+      <br><br>
+      {{ form.resolved.label }} <!-- form heading/label-->
+      {{ form.resolved(class="formField") }} <!-- resolved checkbox - adds endtime-->
+      <br><br><br>
+      {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+    </form>
+  </div>
+{% endblock %}

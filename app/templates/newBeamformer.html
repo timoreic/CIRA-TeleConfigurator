@@ -1,0 +1,29 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form class="smallForm" method="POST" autocomplete="off">
+    <h1 class="center">New Beamformer</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing beamformer_id entry-->
+    {{ form.hidden_tag() }}
+    {{ form.beamformer_id.label }} <!-- form heading/label-->
+    {{ form.beamformer_id(class="formField") }} <!-- beamformer_id form --> 
+    <br><br>
+    {{ form.gain_y.label }} <!-- form heading/label-->
+    {{ form.gain_y(class="formField") }} <!-- gain_y form--> 
+    <br><br>
+    {{ form.gain_x.label }} <!-- form heading/label-->
+    {{ form.gain_x(class="formField") }} <!-- gain_x form--> 
+    <br><br><br>
+    {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+  </form>
+{% endblock %}

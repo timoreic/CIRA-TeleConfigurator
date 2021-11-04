@@ -1,0 +1,17 @@
+#page_content a {
+  background-color: gray;
+  color: white;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 200px;
+  margin: 30px;
+  border-radius: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#page_content ul {
+  padding-top: 50px;
+  text-align: center;
+}

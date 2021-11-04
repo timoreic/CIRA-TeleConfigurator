@@ -1,0 +1,36 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form class="smallForm" method="POST" autocomplete="off">
+    <h1 class="center">New Tile</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing tile_id entry-->
+    {{ form.hidden_tag() }}
+    {{ form.tile_id.label }} <!-- form heading/label-->
+    {{ form.tile_id(class="formField") }} <!-- tile_id form-->
+    <br><br>
+    {{ form.tile_pos_east.label }} <!-- form heading/label-->
+    {{ form.tile_pos_east(class="formField") }} <!-- tile_pos_east form-->
+    <br><br>
+    {{ form.tile_pos_north.label }} <!-- form heading/label-->
+    {{ form.tile_pos_north(class="formField") }} <!-- tile_pos_north form-->
+    <br><br>
+    {{ form.tile_altitude.label }} <!-- form heading/label-->
+    {{ form.tile_altitude(class="formField") }} <!-- tile_altitude form-->
+    <br><br>
+    {{ form.beamformer_id.label }} <!-- form heading/label-->
+    {{ form.beamformer_id(class="formField") }} <!-- beamformer_id form-->
+    <br><br><br>
+    {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+  </form>
+{% endblock %}

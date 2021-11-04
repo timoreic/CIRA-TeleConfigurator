@@ -1,0 +1,112 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form method="POST" autocomplete="off">
+    <h1 class="center">New Receiver</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing receiver_id entry-->
+    {{ form.hidden_tag() }}
+    <div class="container smallForm">
+      <!-- 'receiver_id' form-->
+      {{ form.hidden_tag() }}
+      {{ form.receiver_id.label }}
+      {{ form.receiver_id(class="formField") }}
+      <br><br> <!-- line break-->
+      <!-- 'sbc_name' form-->
+      {{ form.sbc_name.label }}
+      {{ form.sbc_name(class="formField") }}
+      <br><br> <!-- line break-->
+      <!-- 'fibre_length' form-->
+      {{ form.fibre_length.label }}
+      {{ form.fibre_length(class="formField") }}
+      <br><br> <!-- line break-->
+      <!-- 'active' form-->
+      {{ form.active.label }}
+      {{ form.active(class="formField") }}
+    </div>
+    <div class="container large">
+      <div class="table-responsive">
+        <table id="databaseTable" class="table table-dark">
+          <thead>
+            <tr>
+              <!-- table columns-->
+              <th scope="col">receiver_slot</th>
+              <th scope="col">tile</th>
+              <th scope="col">beamformer_id</th>
+              <th scope="col">cable_name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!-- receiver slot 1-->
+              <td>1</td> <!-- slot number-->
+              <td>{{ form.tile1() }}</td> <!-- connected tile_id-->
+              <td>{{ form.beamformer_id1() }}</td> <!-- connected beamformer_id-->
+              <td>{{ form.cable_name1() }}</td> <!-- connected cablename-->
+            </tr>
+            <tr>
+              <!-- receiver slot 2-->
+              <td>2</td>
+              <td>{{ form.tile2() }}</td>
+              <td>{{ form.beamformer_id2() }}</td>
+              <td>{{ form.cable_name2() }}</td>
+            </tr>
+            <tr>
+              <!-- receiver slot 3-->
+              <td>3</td>
+              <td>{{ form.tile3() }}</td>
+              <td>{{ form.beamformer_id3() }}</td>
+              <td>{{ form.cable_name3() }}</td>
+            </tr>
+            <tr>
+              <!-- receiver slot 4-->
+              <td>4</td>
+              <td>{{ form.tile4() }}</td>
+              <td>{{ form.beamformer_id4() }}</td>
+              <td>{{ form.cable_name4() }}</td>
+            </tr>
+            <tr>
+              <!-- receiever slot 5-->
+              <td>5</td>
+              <td>{{ form.tile5() }}</td>
+              <td>{{ form.beamformer_id5() }}</td>
+              <td>{{ form.cable_name5() }}</td>
+            </tr>
+            <tr>
+              <!-- receiver slot 6-->
+              <td>6</td>
+              <td>{{ form.tile6() }}</td>
+              <td>{{ form.beamformer_id6() }}</td>
+              <td>{{ form.cable_name6() }}</td>
+            </tr>
+            <tr>
+              <!-- receiver slot 7-->
+              <td>7</td>
+              <td>{{ form.tile7() }}</td>
+              <td>{{ form.beamformer_id7() }}</td>
+              <td>{{ form.cable_name7() }}</td>
+            </tr>
+            <tr>
+              <!-- receiver slot 8-->
+              <td>8</td>
+              <td>{{ form.tile8() }}</td>
+              <td>{{ form.beamformer_id8() }}</td>
+              <td>{{ form.cable_name8() }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+    </div>
+  </form>
+{% endblock %}

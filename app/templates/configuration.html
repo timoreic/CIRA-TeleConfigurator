@@ -1,0 +1,63 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}"/>
+  <!-- Import JS functionality for table sorting -->
+  <script src="{{ url_for('static', filename='js/tables.js') }}" defer="defer"></script>
+{% endblock %}
+
+{% block page_content %}
+
+  <!-- Everything above the database table -->
+  <div class="container">
+    <!-- Heading -->
+    <h1>Configuration</h1>
+    <!-- Link to add a new Entry -->
+    <a href="/configuration/addNew">Save Configuration</a>
+  </div>
+
+  <!-- Database Table -->
+  <div class="container databaseTable">
+    <div class="table-responsive">
+      <table id="databaseTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <!-- The table headers-->
+            <th scope="col"></th>
+            <th scope="col" class="sortable" onclick="sortTableNum(1)">config_id</th>
+            <th scope="col">configuration_name</th>
+            <th scope="col">active</th>
+            <th scope="col" class="sortable" onclick="sortTableDate(4)">reference_time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for configuration in configurations %} <!-- Loops through each entry in the configuration table passed from 'app/views.py'-->
+            <tr>
+              <!-- The table content - names set in 'app/models.py'-->
+              <td scope="row">
+                <!-- View each configuration based on config_id-->
+                <a href="{{url_for('retrieveConfiguration', config_id=configuration.config_id, configuration_name=configuration.configuration_name)}}">View</a>
+              </td>
+              <td>{{ configuration.config_id }}</td>
+              <td>{{ configuration.configuration_name }}</td>
+              {% if configuration.active == True %} <!-- green box for active configuration-->
+                <td class="bg-success">{{ configuration.active }}</td>
+              {% else %}
+                <td>{{ configuration.active }}</td>
+              {% endif %}
+              <td class="begintime" data-time="{{ configuration.refrence_time }}">{{ configuration.refrence_time }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- Shows the current offset time (gps to unix) -->
+    <p>Current Offset Value (GPS to Unix) =
+      <span id='offset'>{{ offset }}</span></p>
+  </div>
+{% endblock %}

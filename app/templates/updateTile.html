@@ -1,0 +1,58 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <div class="container">
+    <!-- Outlines the 'form' functionality that allows a user to edit a tile-->
+    <form class="smallForm" method="POST" autocomplete="off">
+      <h1 class="center">Update Tile</h1>
+      {% include "modules/formErrors.html"%} <!-- error for missing tile_id entry-->
+      {{ form.hidden_tag() }}
+      {{ form.tile_id.label }} <!-- Form name-->
+      {{ form.tile_id(class="formField", value=tile_to_update.tile_id) }} <!-- The actual form-->
+      <br><br> <!-- line break-->
+      <!-- 'tile_pos_east' form-->
+      {{ form.tile_pos_east.label }} 
+      {% if tile_to_update.tile_pos_east == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.tile_pos_east(class="formField",value="") }}
+      {% else %}
+        {{ form.tile_pos_east(class="formField",value=tile_to_update.tile_pos_east) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'tile_pos_north' form-->
+      {{ form.tile_pos_north.label }}
+      {% if tile_to_update.tile_pos_north == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.tile_pos_north(class="formField",value="") }}
+      {% else %}
+        {{ form.tile_pos_north(class="formField",value=tile_to_update.tile_pos_north) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'tile_altitude' form-->
+      {{ form.tile_altitude.label }}
+      {% if tile_to_update.tile_altitude == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.tile_altitude(class="formField",value="") }}
+      {% else %}
+        {{ form.tile_altitude(class="formField",value=tile_to_update.tile_altitude) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'beamformer_id' form-->
+      {{ form.beamformer_id.label }}
+      {% if tile_to_update.beamformer_id == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.beamformer_id(class="formField",value="") }}
+      {% else %}
+        {{ form.beamformer_id(class="formField",value=tile_to_update.beamformer_id) }}
+      {% endif %}
+      <br><br><br>
+      {{ form.submit(class="btn btn-success") }}
+    </form>
+  </div>
+{% endblock %}

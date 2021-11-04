@@ -1,0 +1,35 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/newEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form class="smallForm" method="POST" autocomplete="off">
+    <h1 class="center">New Cable</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing name entry-->
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} <!-- form heading/label-->
+    {{ form.name(class="formField") }} <!-- name form-->
+    <br><br>
+    {{ form.type.label }} <!-- form heading/label-->
+    {{ form.type(class="formField") }} <!-- type form-->
+    <br><br>
+    {{ form.eleclength.label }} <!-- form heading/label-->
+    {{ form.eleclength(class="formField") }} <!-- eleclength form-->
+    <br><br>
+    {{ form.physlength.label }} <!-- form heading/label-->
+    {{ form.physlength(class="formField") }} <!-- physlength form-->
+    <br><br>
+    {{ form.flavor.label }} <!-- form heading/label-->
+    {{ form.flavor(class="formField") }} <!-- flavor form-->
+    <br><br><br>
+    {{ form.submit(class="btn btn-success") }} <!-- Submit button-->
+  </form>
+{% endblock %}

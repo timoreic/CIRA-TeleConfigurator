@@ -1,0 +1,343 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+  <script src="{{ url_for('static', filename='js/updateReceiver.js') }}" defer="defer"></script>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <form method="POST" autocomplete="off">
+    <h1 class="center">Update Receiver</h1>
+    {% include "modules/formErrors.html"%} <!-- error for missing receiver_id entry-->
+    <div class="container smallForm">
+      <!-- 'receiver_id' form-->
+      {{ form.hidden_tag() }}
+      {{ form.receiver_id.label }}
+      {{ form.receiver_id(class="formField disableable", value=receiver_to_update.receiver_id) }}
+      <br><br> <!-- line break-->
+      <!-- 'sbc_name' form-->
+      {{ form.sbc_name.label }}
+      {{ form.sbc_name(class="formField disableable", value=receiver_to_update.sbc_name) }}
+      <br><br> <!-- line break-->
+      <!-- 'fibre_length' form-->
+      {{ form.fibre_length.label }}
+      {% if receiver_to_update.fibre_length == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.fibre_length(class="formField disableable",value="") }}
+      {% else %}
+        {{ form.fibre_length(class="formField disableable", value=receiver_to_update.fibre_length) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'active' checkbox-->
+      {{ form.active.label }}
+      {% if receiver_to_update.active == True %} <!-- is active status checked?-->
+        {{ form.active(class="formField disableable", checked=True) }} <!-- Yes. Set receiver active status to 'true'-->
+      {% else %}
+        {{ form.active(class="formField disableable", checked=False) }} <!-- No. Set receiver active status to 'false' -->
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- delete receiver checkbox-->
+      {{ deleteReceiverForm.delete_receiver.label }}
+      {{ deleteReceiverForm.delete_receiver(id="deleteReceiver", class="formField") }}
+    </div>
+    <!-- outlines table to edit receiver connections-->
+    <div class="container large">
+      <div class="table-responsive">
+        <table id="databaseTable" class="table table-dark">
+          <thead>
+            <tr>
+              <!-- table column headers-->
+              <th scope="col">receiver_slot</th>
+              <th scope="col">tile</th>
+              <th scope="col">beamformer_id</th>
+              <th scope="col">cable_name</th>
+              <th scope="col">delete?</td>
+            </tr>
+          </thead>
+          <tbody>
+          <!-- Connection 1 -->
+            <tr>
+              <td> 
+                {% if numConnections > 0 and connections_to_update[0].receiver_slot != None %}
+                  {{ form.receiver_slot1(class="disableable", value=connections_to_update[0].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot1(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 0 %}
+                  {{ form.tile1(class="disableable", value=connections_to_update[0].tile) }}
+                {% else %}
+                  {{ form.tile1(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 0 and connections_to_update[0].beamformer_id != None %}
+                  {{ form.beamformer_id1(class="disableable", value=connections_to_update[0].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id1(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 0 %}
+                  {{ form.cable_name1(class="disableable", value=connections_to_update[0].cable_name) }}
+                {% else %}
+                  {{ form.cable_name1(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection1(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 2 -->
+            <tr>
+              <td>
+                {% if numConnections > 1 and connections_to_update[1].receiver_slot != None %}
+                  {{ form.receiver_slot2(class="disableable", value=connections_to_update[1].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot2(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 1 %}
+                  {{ form.tile2(class="disableable", value=connections_to_update[1].tile) }}
+                {% else %}
+                  {{ form.tile2(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 1 and connections_to_update[1].beamformer_id != None %}
+                  {{ form.beamformer_id2(class="disableable", value=connections_to_update[1].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id2(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 1 %}
+                  {{ form.cable_name2(class="disableable", value=connections_to_update[1].cable_name) }}
+                {% else %}
+                  {{ form.cable_name2(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection2(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 3 -->
+            <tr>
+              <td>
+                {% if numConnections > 2 and connections_to_update[2].receiver_slot != None %}
+                  {{ form.receiver_slot3(class="disableable", value=connections_to_update[2].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot3(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 2 %}
+                  {{ form.tile3(class="disableable", value=connections_to_update[2].tile) }}
+                {% else %}
+                  {{ form.tile3(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 2 and connections_to_update[2].beamformer_id != None %}
+                  {{ form.beamformer_id3(class="disableable", value=connections_to_update[2].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id3(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 2 %}
+                  {{ form.cable_name3(class="disableable", value=connections_to_update[2].cable_name) }}
+                {% else %}
+                  {{ form.cable_name3(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection3(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 4 -->
+            <tr>
+              <td>
+                {% if numConnections > 3 and connections_to_update[3].receiver_slot != None %}
+                  {{ form.receiver_slot4(class="disableable", value=connections_to_update[3].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot4(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 3 %}
+                  {{ form.tile4(class="disableable", value=connections_to_update[3].tile) }}
+                {% else %}
+                  {{ form.tile4(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 3 and connections_to_update[3].beamformer_id != None %}
+                  {{ form.beamformer_id4(class="disableable", value=connections_to_update[3].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id4(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 3 %}
+                  {{ form.cable_name4(class="disableable", value=connections_to_update[3].cable_name) }}
+                {% else %}
+                  {{ form.cable_name4(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection4(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 5 -->
+            <tr>
+              <td>
+                {% if numConnections > 4 and connections_to_update[4].receiver_slot != None %}
+                  {{ form.receiver_slot5(class="disableable", value=connections_to_update[4].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot5(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 4 %}
+                  {{ form.tile5(class="disableable", value=connections_to_update[4].tile) }}
+                {% else %}
+                  {{ form.tile5(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 4 and connections_to_update[4].beamformer_id != None %}
+                  {{ form.beamformer_id5(class="disableable", value=connections_to_update[4].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id5(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 4 %}
+                  {{ form.cable_name5(class="disableable", value=connections_to_update[4].cable_name) }}
+                {% else %}
+                  {{ form.cable_name5(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection5(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 6 -->
+            <tr>
+              <td>
+                {% if numConnections > 5 and connections_to_update[5].receiver_slot != None %}
+                  {{ form.receiver_slot6(class="disableable", value=connections_to_update[5].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot6(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 5 %}
+                  {{ form.tile6(class="disableable", value=connections_to_update[5].tile) }}
+                {% else %}
+                  {{ form.tile6(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 5 and connections_to_update[5].beamformer_id != None %}
+                  {{ form.beamformer_id6(class="disableable", value=connections_to_update[5].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id6(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 5 %}
+                  {{ form.cable_name6(class="disableable", value=connections_to_update[5].cable_name) }}
+                {% else %}
+                  {{ form.cable_name6(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection6(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 7 -->
+            <tr>
+              <td>
+                {% if numConnections > 6 and connections_to_update[6].receiver_slot != None %}
+                  {{ form.receiver_slot7(class="disableable", value=connections_to_update[6].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot7(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 6 %}
+                  {{ form.tile7(class="disableable", value=connections_to_update[6].tile) }}
+                {% else %}
+                  {{ form.tile7(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 6 and connections_to_update[6].beamformer_id != None %}
+                  {{ form.beamformer_id7(class="disableable", value=connections_to_update[6].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id7(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 6 %}
+                  {{ form.cable_name7(class="disableable", value=connections_to_update[6].cable_name) }}
+                {% else %}
+                  {{ form.cable_name7(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection7(class="disableable") }}
+              </td>
+            </tr>
+            <!-- Connection 8 -->
+            <tr>
+              <td>
+                {% if numConnections > 7 and connections_to_update[7].receiver_slot != None %}
+                  {{ form.receiver_slot8(class="disableable", value=connections_to_update[7].receiver_slot) }}
+                {% else %}
+                  {{ form.receiver_slot8(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 7 %}
+                  {{ form.tile8(class="disableable", value=connections_to_update[7].tile) }}
+                {% else %}
+                  {{ form.tile8(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 7 and connections_to_update[7].beamformer_id != None %}
+                  {{ form.beamformer_id8(class="disableable", value=connections_to_update[7].beamformer_id) }}
+                {% else %}
+                  {{ form.beamformer_id8(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {% if numConnections > 7 %}
+                  {{ form.cable_name8(class="disableable", value=connections_to_update[7].cable_name) }}
+                {% else %}
+                  {{ form.cable_name8(class="disableable") }}
+                {% endif %}
+              </td>
+              <td>
+                {{ form.delete_connection8(class="disableable") }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      {{ form.submit(id="submitUpdate", class="btn btn-success") }}
+      {{ deleteReceiverForm.submit(id="submitDelete", class="invisible btn btn-danger") }}
+    </div>
+  </form>
+{% endblock %}

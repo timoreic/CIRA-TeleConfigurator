@@ -1,0 +1,41 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <div class="container">
+    <form class="smallForm" method="POST" autocomplete="off">
+      <h1 class="center">Update Beamformer</h1>
+      {% include "modules/formErrors.html"%} <!-- error for missing beamformer_id entry-->
+      {{ form.hidden_tag() }}
+      {{ form.beamformer_id.label }}
+      {{ form.beamformer_id(class="formField", value=beamformer_to_update.beamformer_id) }}
+      <br><br> <!-- line break-->
+      <!-- 'gain_y' form-->
+      {{ form.gain_y.label }}
+      {% if beamformer_to_update.gain_y == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.gain_y(class="formField",value="") }}
+      {% else %}
+        {{ form.gain_y(class="formField",value=beamformer_to_update.gain_y) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'gain_x' form-->
+      {{ form.gain_x.label }}
+      {% if beamformer_to_update.gain_x == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.gain_x(class="formField",value="") }}
+      {% else %}
+        {{ form.gain_x(class="formField",value=beamformer_to_update.gain_x) }}
+      {% endif %}
+      <br><br><br>
+      {{ form.submit(class="btn btn-success") }}
+    </form>
+  </div>
+{% endblock %}

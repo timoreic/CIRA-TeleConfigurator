@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+  <script src="{{ url_for('static', filename='js/tables.js') }}" defer="defer"></script>
+{% endblock %}
+
+{% block page_content %}
+
+  <!-- Everything above the database table -->
+  <div class="container">
+    <h1 class="center">Retrieve Configuration</h1>
+    <form class="smallForm" method="POST" autocomplete="off">
+      {% include "modules/formErrors.html"%} <!-- error for missing entry-->
+      {{ form.hidden_tag() }}
+      {{ form.config_id.label }}
+      {{ form.config_id(class="formField", value=configuration_to_retrieve.config_id, readonly=true) }}
+      <br><br>
+      {{ form.configuration_name.label }}
+      {{ form.configuration_name(class="formField", value=configuration_to_retrieve.configuration_name, readonly=true) }}
+      <br><br>
+      {{ form.submit(class="btn btn-success") }}
+    </form>
+  </div>
+
+  <!-- Database Table -->
+  <div class="table-responsive databaseTable">
+    <table id="databaseTable" class="table">
+      <thead>
+        <tr>
+          <!-- Table headers-->
+          <th scope="col" class="sortable" onclick="sortTableNum(1)">receiver_id</th>
+          <th scope="col" class="sortable" onclick="sortTableNum(2)">receiver_slot</th>
+          <th scope="col" class="sortable" onclick="sortTableNum(3)">tile</th>
+          <th scope="col" class="sortable" onclick="sortTableNum(4)">beamformer_id</th>
+          <th scope="col">cable_name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for connection in connections %} <!-- Loops through each entry in the connections table passed from 'app/views.py'-->
+          <tr>
+            <!-- The table content - names set in 'app/models.py'-->
+            <td>{{ connection.receiver_id }}</td>
+            <td>{{ connection.receiver_slot }}</td>
+            <td>{{ connection.tile }}</td>
+            <td>{{ connection.beamformer_id }}</td>
+            <td>{{ connection.cable_name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

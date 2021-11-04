@@ -1,0 +1,30 @@
+#page_content .container {
+  margin-top: 40px;
+}
+
+#page_content h1 {
+  margin-bottom: 20px;
+}
+
+#page_content form {
+  width: 500px;
+  padding-top: 20px;
+}
+
+#page_content .databaseTable {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+#page_content #submitFilter {
+  margin-left: 10px;
+}
+
+#page_content .sortable {
+  cursor: pointer;
+}
+
+#page_content .connectionsTable {
+  border-collapse: separate; 
+  border-spacing: 20px 0px;
+}

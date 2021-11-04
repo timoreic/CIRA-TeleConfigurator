@@ -1,0 +1,59 @@
+<!-- Extends the projects 'base.html' file-->
+{% extends "base.html" %}
+<!-- import for forms-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+  {{ super() }}
+  <!-- css styling sheet reference -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEntry.css') }}"/>
+  <script src="{{ url_for('static', filename='js/updateCable.js') }}" defer="defer"></script>
+{% endblock %}
+
+<!-- Page content-->
+{% block page_content %}
+  <div class="container">
+    <!-- Outlines the 'form' functionality that allows a user to edit a tile-->
+    <form class="smallForm" method="POST" autocomplete="off">
+      <h1 class="center">Update Cable</h1>
+      {% include "modules/formErrors.html"%} <!-- error for missing name entry-->
+      {{ form.hidden_tag() }}
+      {{ form.name.label }}
+      {{ form.name(class="formField", value=cable_to_update.name) }}
+      <br><br> <!-- line break-->
+      <!-- 'type' form-->
+      {{ form.type.label }}
+      {% if cable_to_update.type == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.type(class="formField",value="") }}
+      {% else %}
+        {{ form.type(class="formField",value=cable_to_update.type) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'eleclength' form-->
+      {{ form.eleclength.label }}
+      {% if cable_to_update.eleclength == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.eleclength(class="formField",value="") }}
+      {% else %}
+        {{ form.eleclength(class="formField",value=cable_to_update.eleclength) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'physlength' form-->
+      {{ form.physlength.label }}
+      {% if cable_to_update.physlength == None %} <!-- Keeps value same unless change is detected-->
+        {{ form.physlength(class="formField",value="") }}
+      {% else %}
+        {{ form.physlength(class="formField",value=cable_to_update.physlength) }}
+      {% endif %}
+      <br><br> <!-- line break-->
+      <!-- 'flavor' form-->
+      {{ form.flavor.label }}
+      {% if cable_to_update.flavor == None %}
+        {{ form.flavor(id="flavorDropdown",class="formField",**{'data-flavor':""}) }}
+      {% else %}
+        {{ form.flavor(id="flavorDropdown",class="formField",**{'data-flavor':cable_to_update.flavor}) }}
+      {% endif %}
+      <br><br><br>
+      {{ form.submit(class="btn btn-success") }}
+    </form>
+  </div>
+{% endblock %}
